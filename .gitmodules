@@ -1,0 +1,3 @@
+[submodule "librwelf"]
+	path = librwelf
+	url = https://github.com/geyslan/librwelf.git
