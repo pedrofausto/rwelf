@@ -1,0 +1,7 @@
+TODO
+------------------------------------------------------------------------
+
+rwelf:
+
+- Implement framework and argument usage
+- Add options to the program, just like readelf options

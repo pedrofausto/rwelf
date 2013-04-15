@@ -50,9 +50,9 @@ static void _show_elf_sections(const Elf_Ehdr *ehdr)
 	const rwelf *elf = ehdr->elf;
 	Elf_Shdr sec;
 	int i, num_sections;
-	
+
 	num_sections = rwelf_num_sections(ehdr);
-	
+
     for (i = 0; i < num_sections; ++i) {
         rwelf_get_section_by_num(elf, i, &sec);
         printf("Section: %s\n", rwelf_get_section_name(&sec));
@@ -66,7 +66,7 @@ static void _show_elf_symbols(const rwelf *elf)
 {
 	Elf_Sym sym;
 	int i, num_symbols;
-	
+
 	num_symbols = rwelf_num_symbols(elf);
 	for (i = 0; i < num_symbols; ++i) {
 		rwelf_get_symbol_by_num(elf, i, &sym);
@@ -80,12 +80,12 @@ static void _show_elf_symbols(const rwelf *elf)
 static void _show_elf_rela(const Elf_Shdr *shdr, size_t n)
 {
 	int i;
-	
+
 	for (i = 0; i < n; ++i) {
 		Elf_Rela rela;
-		
+
 		rwelf_get_rela_by_num(shdr, i, &rela);
-		
+
 		printf("Offset: %012lx | Info: %012lx | Addend: %012lx | Sym: %s\n", 
 			rwelf_get_rela_offset(&rela),
 			rwelf_get_rela_info(&rela),
@@ -101,21 +101,21 @@ static void _show_elf_relocations(const Elf_Ehdr *ehdr)
 {
 	const rwelf *elf = ehdr->elf;
 	int i, num_sections;
-	
+
 	num_sections = rwelf_num_sections(ehdr);
-	
+
 	for (i = 0; i < num_sections; ++i) {
 		Elf_Shdr sec;
 		size_t n;
-			
+
 		rwelf_get_section_by_num(elf, i, &sec);		
-		
+
 		switch (rwelf_get_section_type(&sec)) {
 			case SHT_REL:
 			case SHT_RELA:
 				n = rwelf_get_num_entries(&sec);
 				printf("Relocation entries: %d\n",(int) n);
-					
+
 				_show_elf_rela(&sec, n);
 				break;
 		}
@@ -129,14 +129,14 @@ static void _show_elf_pheaders(const Elf_Ehdr *ehdr)
 {
 	const rwelf *elf = ehdr->elf;
 	int i, num_phdrs;
-	
+
 	num_phdrs = rwelf_num_pheaders(ehdr);
-	
+
 	for (i = 0; i < num_phdrs; ++i) {
 		Elf_Phdr phdr;
-				
+
 		rwelf_get_pheader_by_num(elf, i, &phdr);
-	
+
 		printf("Type: %s\n", rwelf_get_pheader_type_name(&phdr));
 	}
 }
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	const char *file;
 	Elf_Ehdr ehdr;
 	rwelf *elf;
-	
+
 	while ((c = getopt(argc, argv, "h:l:S:s:r:")) != -1) {
 		switch (c) {
 			case 'h': /* Header */
@@ -162,13 +162,13 @@ int main(int argc, char **argv)
 				break;
 		}		
 	}
-	
+
 	if (!file || !c) {
 	  printf("You have to specific options and an ELF file.\n");
 	  printf("Eg. rwelf -h /bin/ls\n");
 	  return 0;
 	}
-	
+
 	if (!(elf = rwelf_open(file))) {
 		exit(1);
 	}
@@ -191,9 +191,9 @@ int main(int argc, char **argv)
 			_show_elf_symbols(elf);
 			break;
 	}
-	
+
 	rwelf_close(elf);	
-	
+
 	/*
 
 	
